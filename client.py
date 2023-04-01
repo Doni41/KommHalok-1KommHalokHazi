@@ -59,8 +59,19 @@ class Graph:
         for x in range(timer, self.data['simulation']['duration']+1):
 
             for i in self.data['simulation']['demands']:
+
+                if i['end-time'] == timer:
+                    for z in available_resources[i['end-points'][0]]:
+                        # az eddig foglalt eroforrasokat visszarakom, hogy ujra elerhetoek legyenek
+                        if z not in available_switches:
+                            available_switches.append(z)
+                    print("{0}. igény felszabadítás: {1}<->{2} st:{3}".format(event_counter, i['end-points'][0], i['end-points'][1], timer))
+                    event_counter += 1
+
                 if i['start-time'] == timer:
+                    demand = i['demand']
                     is_available = True
+                    enough_capacity = True
                     
                     for j in self.graph_elements[i['end-points'][0]]['circuits']:
                         tmp_len = len(j)
@@ -72,6 +83,10 @@ class Graph:
                                 tmp_counter += 1
                         if tmp_counter == tmp_len - 2:
                             available_resources[i['end-points'][0]] = j
+                            for g in self.data['links']:
+                                for z in range(0, len(j) - 1 ):
+                                    if j[z] == g['points'][0] and j[z+1] == g['points'][1] and g['capacity'] < demand:
+                                        enough_capacity = False
 
                             # kiveszem az elerheto switch-ek kozul azt, ami az adott utat erinti
                             for y in j:
@@ -81,21 +96,12 @@ class Graph:
                         else:
                             is_available = False
                     
-                    if is_available:
+                    if is_available and enough_capacity:
                         print("{0}. igény foglalás: {1}<->{2} st:{3} - sikeres".format(event_counter, i['end-points'][0], i['end-points'][1], timer))
                         event_counter += 1
                     else:
                         print("{0}. igény foglalás: {1}<->{2} st:{3} - sikertelen".format(event_counter, i['end-points'][0], i['end-points'][1], timer))
                         event_counter += 1
-
-                if i['end-time'] == timer:
-                    for z in available_resources[i['end-points'][0]]:
-
-                        # az eddig foglalt eroforrasokat visszarakom, hogy ujra elerhetoek legyenek
-                        if z not in available_switches:
-                            available_switches.append(z)
-                    print("{0}. igény felszabadítás: {1}<->{2} st:{3}".format(event_counter, i['end-points'][0], i['end-points'][1], timer))
-                    event_counter += 1
 
             timer += 1
         return 

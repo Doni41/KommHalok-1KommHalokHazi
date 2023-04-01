@@ -7,32 +7,32 @@
 			"capacity" : 10.0
 		},
 		{
-				"points" : [ "B", "S2" ],
-				"capacity" : 10.0
+			"points" : [ "B", "S2" ],
+			"capacity" : 10.0
 		},
 		{
-				"points" : [ "D", "S4" ],
-				"capacity" : 10.0
+			"points" : [ "D", "S4" ],
+			"capacity" : 10.0
 		},
 		{
-				"points" : [ "S1", "S4" ],
-				"capacity" : 10.0
+			"points" : [ "S1", "S4" ],
+			"capacity" : 10.0
 		},
 		{
-				"points" : [ "S1", "S3" ],
-				"capacity" : 10.0
+			"points" : [ "S1", "S3" ],
+			"capacity" : 10.0
 		},
 		{
-				"points" : [ "S2", "S3" ],
-				"capacity" : 10.0
+			"points" : [ "S2", "S3" ],
+			"capacity" : 10.0
 		},
 		{
-				"points" : [ "S4", "C" ],
-				"capacity" : 10.0
+			"points" : [ "S4", "C" ],
+			"capacity" : 10.0
 		},
 		{
-				"points" : [ "S3", "C" ],
-				"capacity" : 10.0
+			"points" : [ "S3", "C" ],
+			"capacity" : 10.0
 		}
 	],
 	"possible-circuits" : [
