@@ -55,17 +55,24 @@ class Graph:
         event_counter = 1   # esemenyek sorszamanak nyilvantartasat vegzo seged valtozo
         available_switches = self.data['switches'].copy()
         available_resources = {}
+        used_end_points = []
         # egy kor szimulalasa
         for x in range(timer, self.data['simulation']['duration']+1):
 
             for i in self.data['simulation']['demands']:
 
                 if i['end-time'] == timer:
+                    is_used = False
                     for z in available_resources[i['end-points'][0]]:
                         # az eddig foglalt eroforrasokat visszarakom, hogy ujra elerhetoek legyenek
                         if z not in available_switches:
                             available_switches.append(z)
-                    print("{0}. igény felszabadítás: {1}<->{2} st:{3}".format(event_counter, i['end-points'][0], i['end-points'][1], timer))
+                    for h in used_end_points:
+                        if h[0] == i['end-points'][0] and h[1] == i['end-points'][1]:
+                            is_used = True
+                            used_end_points.remove(h)
+                    if (is_used):
+                        print("{0}. igény felszabadítás: {1}<->{2} st:{3}".format(event_counter, i['end-points'][0], i['end-points'][1], timer))
                     event_counter += 1
 
                 if i['start-time'] == timer:
@@ -83,6 +90,8 @@ class Graph:
                                 tmp_counter += 1
                         if tmp_counter == tmp_len - 2:
                             available_resources[i['end-points'][0]] = j
+                            used_end_points.append([j[0], j[len(j)-1]])
+
                             for g in self.data['links']:
                                 for z in range(0, len(j) - 1 ):
                                     if j[z] == g['points'][0] and j[z+1] == g['points'][1] and g['capacity'] < demand:
